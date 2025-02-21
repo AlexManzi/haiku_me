@@ -43,13 +43,11 @@ const BarSegment = styled.div`
 `;
 
 
-interface LandingProps {
-    active: boolean;
-    show : boolean;
-    user: object;
+type LandingProps = {
+    user: any;
 }
 
-export default function Landing({ active, show, user }: LandingProps ) {
+export default function Landing( { user }: LandingProps ) {
   const [logIn, setLogIn] = useState(false);
   const [clicked, setClicked] = useState(false);
 
@@ -76,9 +74,9 @@ export default function Landing({ active, show, user }: LandingProps ) {
     "Creativity" : 'rgba(255, 0, 255, 1)'
   };
 
-  const segments = colors.map((segment, idx) => {
-    <BarSegment segment={segment} key={idx}></BarSegment>
-  })
+//   const segments = colors.map((segment, idx) => {
+//     <BarSegment segment={segment} key={idx}></BarSegment>
+//   })
 
 
   return (

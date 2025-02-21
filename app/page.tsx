@@ -2,14 +2,10 @@ import Landing from "./ui/landing";
 import { options } from "./api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 
-interface HomeProps {
-  user: object;
-}
 
-export default async function Home({ user }: HomeProps ) {
+export default async function Home() {
 
   const session = await getServerSession(options);
-  console.log("session", session)
 
   return (
     <>

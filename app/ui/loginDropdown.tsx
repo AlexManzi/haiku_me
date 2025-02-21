@@ -89,12 +89,11 @@ const GLogo = styled(Image)`
     padding-left: .5rem;
 `;
 
-interface LoginDropdownProps {
+type LoginDropdownProps = {
     active: boolean;
-    show: boolean;
 }
 
-export default function LoginDropdown({ active, show }: LoginDropdownProps ) {
+export default function LoginDropdown( { active }: LoginDropdownProps ) {
     const [showSignIn, setShowSignIn] = useState(false);
 
     useEffect(() => {
@@ -107,8 +106,7 @@ export default function LoginDropdown({ active, show }: LoginDropdownProps ) {
                 clearTimeout(timer1)
             }
         }
-    }, [])
-
+    }, []);
 
     return (
         <DropdownWrapper $isActive={active}>
