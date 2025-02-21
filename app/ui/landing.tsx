@@ -67,20 +67,52 @@ const BarSegment = styled.div<{$color: string}>`
     color: black;
   }
 
+  &:hover {
+    background-color: white;
+    cursor: pointer;
+  }
+
 `;
 
 type LandingProps = {
     user: any;
+    emotion: string;
 }
 
 export default function Landing( { user }: LandingProps ) {
   const [logIn, setLogIn] = useState(false);
   const [clicked, setClicked] = useState(false);
+  const [open, setOpen] = useState(false)
+  const [userEmotion, setUserEmotion] = useState('');
+  const [haiku, setHaiku] = useState('');
+
+  let requestString = `Write a haiku elliciting the emotion of ${userEmotion}`
+
+  const sendRequest = async ({emotion}: LandingProps) => {
+    setUserEmotion(emotion)
+    const messages = [
+      { role: 'user', content: requestString }
+    ];
+
+  const response = await fetch('/api/gptconnect', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ messages }),
+  });
+
+  const data = await response.json();
+    setHaiku(data);
+  };
+
+  console.log(haiku)
 
   const handleClick = () => {
     if (user) {
         setLogIn(false)
         setClicked(true);
+        setOpen(true)
     } else {
         setLogIn(true)
         setClicked(true)
@@ -100,9 +132,11 @@ export default function Landing( { user }: LandingProps ) {
     "Creativity" : 'rgba(255, 0, 255, 1)'
   };
 
+  
+
   const segments = Object.entries(colors).map(([emotion, color], idx) => {
     return (
-        <BarSegment key={idx} $color={color}><p>{emotion}</p></BarSegment>
+        <BarSegment key={idx} $color={color} onClick={() => sendRequest({emotion})}><p>{emotion}</p></BarSegment>
     )
   });
 
@@ -110,7 +144,7 @@ export default function Landing( { user }: LandingProps ) {
     <>
     {logIn && <LoginDropdown active={clicked} />}
     <LandingWrapper>
-        {(!clicked && logIn) ? <ColorBar>{segments}</ColorBar> : <CircleButton onClick={handleClick}>Haiku Me</CircleButton>}
+        {open ? <ColorBar>{segments}</ColorBar> : <CircleButton onClick={handleClick}>Haiku Me</CircleButton>}
     </LandingWrapper>
     </>
   );
