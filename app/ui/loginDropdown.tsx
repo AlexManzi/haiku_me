@@ -14,7 +14,7 @@ const fadeInSlideDown = keyframes`
   to {
     opacity: 1;
     height: 100vh;
-  }
+    }
 `;
 
 const DropdownWrapper = styled.div<{$isActive: boolean}>`
@@ -25,16 +25,18 @@ const DropdownWrapper = styled.div<{$isActive: boolean}>`
     z-index: 5;
     display: flex;
     justify-content: center;
+    backdrop-filter: blur(2px);
     align-items: center;
-    animation: ${(props) => (props.$isActive ? fadeInSlideDown : '')} 0.3s ease;
+    animation: ${fadeInSlideDown} .25s ease;
 `;
 
 const SignInArea = styled.div<{$show: boolean}>`
     display: flex;
-    height: 40vh;
+    height: 36vh;
     flex-direction: column;
     background-color: white;
-    width: 30%;
+    width: 340px;
+    border-radius: 12px;
     opacity: ${(props) => props.$show ? '1' : '0'};
     transition: all .3s ease;
 `;
@@ -52,11 +54,12 @@ const Login = styled.div`
     color: black;
     background-color: white;
     border: 1px solid rgb(229,230,236);
-    width: 200px;
+    width: max-content;
     text-align: center;
     border-radius: 2px;
     color: #525659;
     cursor: pointer;
+    margin: 0 auto;
     box-shadow: .1px .1px 5px rgb(229,230,236);
     transition: border .3s ease, box-shadow .3s ease;
 
@@ -114,6 +117,7 @@ export default function LoginDropdown( { active }: LoginDropdownProps ) {
                 <SingInHeading>Haiku_me</SingInHeading>
                 <Login onClick={() => signIn('google', { callbackUrl: '/'})}>
                 <GLogo src={GoogleLogo} alt="Google Logo"/>
+                <p>Sign in with Google</p>
                 </Login>
             </SignInArea>
         </DropdownWrapper>

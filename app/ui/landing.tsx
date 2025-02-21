@@ -13,6 +13,10 @@ const fadeIn = keyframes`
   }
 `;
 
+const blurIn = keyframes`
+
+`;
+
 const LandingWrapper = styled.div`
     height: 100vh;
     width: 100%;
@@ -34,6 +38,7 @@ const CircleButton = styled.button`
     backdrop-filter: blur(1000px);
     transition: background-color .3s ease;
     transition: box-shadow .3s ease;
+    
 
     &:hover {
         background-color: #2549FF;
@@ -64,7 +69,6 @@ const BarSegment = styled.div<{$color: string}>`
 
 `;
 
-
 type LandingProps = {
     user: any;
 }
@@ -79,7 +83,7 @@ export default function Landing( { user }: LandingProps ) {
         setClicked(true);
     } else {
         setLogIn(true)
-        setClicked(false)
+        setClicked(true)
     }
   };
 
@@ -106,7 +110,7 @@ export default function Landing( { user }: LandingProps ) {
     <>
     {logIn && <LoginDropdown active={clicked} />}
     <LandingWrapper>
-        {clicked ? <ColorBar>{segments}</ColorBar> : <CircleButton onClick={handleClick}></CircleButton>}
+        {(!clicked && logIn) ? <ColorBar>{segments}</ColorBar> : <CircleButton onClick={handleClick}>Haiku Me</CircleButton>}
     </LandingWrapper>
     </>
   );
