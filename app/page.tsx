@@ -1,5 +1,3 @@
-import Image from "next/image";
-import styles from "./page.module.css";
 import Landing from "./ui/landing";
 import { options } from "./api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
