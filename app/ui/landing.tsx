@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect, FC } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import LoginDropdown from "./loginDropdown";
 
@@ -35,11 +35,14 @@ const CircleButton = styled.button`
 interface LandingProps {
     active: boolean;
     show : boolean;
+    user: object;
 }
 
-export default function Landing({ active, show }: LandingProps ) {
+export default function Landing({ active, show, user }: LandingProps ) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [clicked, setClicked] = useState(false);
+
+  console.log(user)
 
   const handleClick = () => {
     setLoggedIn(true);
