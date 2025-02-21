@@ -63,14 +63,23 @@ export default function Landing({ active, show, user }: LandingProps ) {
     }
   };
 
-  const colors = [
-    'rgba(255, 0, 0, 1)',    // Red
-    'rgba(0, 255, 0, 1)',    // Green
-    'rgba(0, 0, 255, 1)',    // Blue
-    'rgba(255, 255, 0, 1)',  // Yellow
-    'rgba(0, 255, 255, 1)',  // Cyan
-    'rgba(255, 0, 255, 1)'   // Magenta
-  ];
+  interface ColorMap {
+    [emotion: string]: string;
+  }
+
+  const colors: ColorMap = {
+    "Confidence" : 'rgba(255, 0, 0, 1)',
+    "Calmness" : 'rgba(0, 255, 0, 1)',
+    "Trust" : 'rgba(0, 0, 255, 1)',
+    "Happiness" : 'rgba(255, 255, 0, 1)',
+    "Peace" : 'rgba(0, 255, 255, 1)',
+    "Creativity" : 'rgba(255, 0, 255, 1)'
+  };
+
+  const segments = colors.map((segment, idx) => {
+    <BarSegment segment={segment} key={idx}></BarSegment>
+  })
+
 
   return (
     <>
