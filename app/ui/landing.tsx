@@ -1,8 +1,17 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import styled, { css } from "styled-components"
+import styled, { keyframes, css } from "styled-components"
 import LoginDropdown from "./loginDropdown";
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 
 const LandingWrapper = styled.div`
     height: 100vh;
@@ -34,12 +43,25 @@ const CircleButton = styled.button`
 
 const ColorBar = styled.div`
   height: 100px;
-  width: 600px;
+  width: auto;
   display: flex;
+  margin: 0 auto;
+    animation: ${fadeIn} 0.4s ease;
 `;
 
-const BarSegment = styled.div`
-  width: 20%;
+const BarSegment = styled.div<{$color: string}>`
+  width: 200px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${(props) => props.$color};
+
+  p {
+    font-weight: 700;
+    color: black;
+  }
+
 `;
 
 
@@ -61,7 +83,7 @@ export default function Landing( { user }: LandingProps ) {
     }
   };
 
-  interface ColorMap {
+  type ColorMap = {
     [emotion: string]: string;
   }
 
@@ -74,16 +96,17 @@ export default function Landing( { user }: LandingProps ) {
     "Creativity" : 'rgba(255, 0, 255, 1)'
   };
 
-//   const segments = colors.map((segment, idx) => {
-//     <BarSegment segment={segment} key={idx}></BarSegment>
-//   })
-
+  const segments = Object.entries(colors).map(([emotion, color], idx) => {
+    return (
+        <BarSegment key={idx} $color={color}><p>{emotion}</p></BarSegment>
+    )
+  });
 
   return (
     <>
     {logIn && <LoginDropdown active={clicked} />}
     <LandingWrapper>
-        <CircleButton onClick={handleClick}>Haiku Me</CircleButton>
+        {clicked ? <ColorBar>{segments}</ColorBar> : <CircleButton onClick={handleClick}></CircleButton>}
     </LandingWrapper>
     </>
   );
