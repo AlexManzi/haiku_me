@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, FC } from "react"
 import styled from "styled-components"
 import LoginDropdown from "./loginDropdown";
 
@@ -22,6 +22,7 @@ const CircleButton = styled.button`
     border: 0;
     cursor: pointer;
     background-color: #2549FF;
+    backdrop-filter: blur(1000px);
     transition: background-color .3s ease;
     transition: box-shadow .3s ease;
 
@@ -31,7 +32,12 @@ const CircleButton = styled.button`
     }
 `;
 
-export default function Landing() {
+interface LandingProps {
+    active: boolean;
+    show : boolean;
+}
+
+export default function Landing({ active, show }: LandingProps ) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [clicked, setClicked] = useState(false);
 
@@ -41,9 +47,11 @@ export default function Landing() {
   };
 
   return (
+    <>
+    {loggedIn && <LoginDropdown active={clicked} />}
     <LandingWrapper>
       <CircleButton onClick={handleClick}>Turn On</CircleButton>
-      {loggedIn && <LoginDropdown clicked={clicked} />}
     </LandingWrapper>
+    </>
   );
 }
