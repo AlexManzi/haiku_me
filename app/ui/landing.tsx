@@ -1,0 +1,49 @@
+"use client"
+
+import React, { useState, useEffect } from "react"
+import styled from "styled-components"
+import LoginDropdown from "./loginDropdown";
+
+const LandingWrapper = styled.div`
+    height: 100vh;
+    width: 100%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+`;
+
+const CircleButton = styled.button`
+    margin: 0 auto;
+    height: 160px;
+    width: 160px;
+    border-radius: 250px;
+    border: 0;
+    cursor: pointer;
+    background-color: #2549FF;
+    transition: background-color .3s ease;
+    transition: box-shadow .3s ease;
+
+    &:hover {
+        background-color: #2549FF;
+        box-shadow: 0px 0px 5px 5px green;
+    }
+`;
+
+export default function Landing() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [clicked, setClicked] = useState(false);
+
+  const handleClick = () => {
+    setLoggedIn(true);
+    setClicked(true);
+  };
+
+  return (
+    <LandingWrapper>
+      <CircleButton onClick={handleClick}>Turn On</CircleButton>
+      {loggedIn && <LoginDropdown clicked={clicked} />}
+    </LandingWrapper>
+  );
+}
