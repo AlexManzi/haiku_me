@@ -88,7 +88,7 @@ export default function Landing( { user }: LandingProps ) {
 
   let requestString = `Write a haiku elliciting the emotion of ${userEmotion}`
 
-  const sendRequest = async ({emotion}: LandingProps) => {
+  const sendRequest = async (emotion) => {
     setUserEmotion(emotion)
     const messages = [
       { role: 'user', content: requestString }
@@ -132,11 +132,10 @@ export default function Landing( { user }: LandingProps ) {
     "Creativity" : 'rgba(255, 0, 255, 1)'
   };
 
-  
 
   const segments = Object.entries(colors).map(([emotion, color], idx) => {
     return (
-        <BarSegment key={idx} $color={color} onClick={() => sendRequest({emotion})}><p>{emotion}</p></BarSegment>
+        <BarSegment key={idx} $color={color} onClick={() => sendRequest(emotion)}><p>{emotion}</p></BarSegment>
     )
   });
 
