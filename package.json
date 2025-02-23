@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-polly": "^3.750.0",
     "@types/styled-components": "^5.1.34",
     "next": "^15.1.7",
     "next-auth": "^4.24.11",

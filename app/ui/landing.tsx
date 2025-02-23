@@ -27,69 +27,88 @@ const LandingWrapper = styled.div`
     z-index: 1;
 `;
 
-const CircleButton = styled.button`
+const CircleButton = styled.div`
+    display: flex;
     margin: 0 auto;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
     height: 160px;
     width: 160px;
     border-radius: 250px;
     border: 0;
     cursor: pointer;
-    background-color: #2549FF;
+    background-color: #22ABFF;
     backdrop-filter: blur(1000px);
-    transition: background-color .3s ease;
-    transition: box-shadow .3s ease;
-    
+    transition: all .3s ease;
+    font-size: 1.5rem;
+
+    p {
+        margin-top: -.25rem;
+    }
 
     &:hover {
-        background-color: #2549FF;
-        box-shadow: 0px 0px 5px 5px #1987FB;
+        background-color: #22ABFF;
+        box-shadow: 0px 0px 25px 1px #22ABFF;
+        font-size: 1.6rem;
     }
 `;
 
 const ColorBar = styled.div`
-  height: 100px;
+  height: 70px;
   width: auto;
   display: flex;
+  gap: .5rem;
   margin: 0 auto;
     animation: ${fadeIn} 0.4s ease;
 `;
 
 const BarSegment = styled.div<{$color: string}>`
-  width: 200px;
+  width: 120px;
   height: 100%;
   display: flex;
+  color: black;
   align-items: center;
+  border-bottom: 3px solid white;
   justify-content: center;
+  transition: all .2s ease;
   background-color: ${(props) => props.$color};
 
   p {
     font-weight: 700;
-    color: black;
+    font-size: 1.15rem;
   }
 
   &:hover {
-    background-color: white;
     cursor: pointer;
+    color: #22ABFF;
+    border-bottom: 3px solid #22ABFF;
   }
 
+`;
+
+const HaikuText = styled.h1`
+    color: black;
+    animation: ${fadeIn} 0.4s ease;
+    font-size: 2rem;
+    margin: 0 auto;
 `;
 
 type LandingProps = {
     user: any;
     emotion: string;
+    haiku: object;
 }
 
 export default function Landing( { user }: LandingProps ) {
   const [logIn, setLogIn] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [open, setOpen] = useState(false)
-  const [userEmotion, setUserEmotion] = useState('');
   const [haiku, setHaiku] = useState('');
 
-  let requestString = `Write a haiku elliciting the emotion of ${userEmotion}`
-
   const sendRequest = async (emotion) => {
-    setUserEmotion(emotion)
+    let requestString = `Write a haiku elliciting the emotion of ${emotion}`
+    
     const messages = [
       { role: 'user', content: requestString }
     ];
@@ -105,8 +124,6 @@ export default function Landing( { user }: LandingProps ) {
   const data = await response.json();
     setHaiku(data);
   };
-
-  console.log(haiku)
 
   const handleClick = () => {
     if (user) {
@@ -124,12 +141,12 @@ export default function Landing( { user }: LandingProps ) {
   }
 
   const colors: ColorMap = {
-    "Confidence" : 'rgba(255, 0, 0, 1)',
-    "Calmness" : 'rgba(0, 255, 0, 1)',
-    "Trust" : 'rgba(0, 0, 255, 1)',
-    "Happiness" : 'rgba(255, 255, 0, 1)',
-    "Peace" : 'rgba(0, 255, 255, 1)',
-    "Creativity" : 'rgba(255, 0, 255, 1)'
+    "Confidence" : '',
+    "Calmness" : '',
+    "Trust" : '',
+    "Happiness" : '',
+    "Peace" : '',
+    "Creativity" : ''
   };
 
 
@@ -142,9 +159,14 @@ export default function Landing( { user }: LandingProps ) {
   return (
     <>
     {logIn && <LoginDropdown active={clicked} />}
+    {haiku ? 
     <LandingWrapper>
-        {open ? <ColorBar>{segments}</ColorBar> : <CircleButton onClick={handleClick}>Haiku Me</CircleButton>}
+        <HaikuText>{haiku.result.content}</HaikuText>
     </LandingWrapper>
+    :
+    <LandingWrapper>
+        {open ? <ColorBar>{segments}</ColorBar> : <CircleButton onClick={handleClick}><p>Haiku Me</p></CircleButton>}
+    </LandingWrapper>}
     </>
   );
 }
