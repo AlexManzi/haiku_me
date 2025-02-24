@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import styled, { keyframes, css } from "styled-components"
+import styled, { keyframes } from "styled-components"
 import LoginDropdown from "./loginDropdown";
 
 const fadeIn = keyframes`
@@ -11,10 +11,6 @@ const fadeIn = keyframes`
   to {
     opacity: 1;
   }
-`;
-
-const blurIn = keyframes`
-
 `;
 
 const LandingWrapper = styled.div`
@@ -84,7 +80,6 @@ const BarSegment = styled.div<{$color: string}>`
     color: #22ABFF;
     border-bottom: 3px solid #22ABFF;
   }
-
 `;
 
 const HaikuText = styled.h1`
@@ -105,8 +100,15 @@ export default function Landing( { user }: LandingProps ) {
   const [clicked, setClicked] = useState(false);
   const [open, setOpen] = useState(false)
   const [haiku, setHaiku] = useState('');
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
 
-  const sendRequest = async (emotion) => {
+  useEffect(() => {
+    if(haiku) {
+      handleSynthesize(haiku)
+    }
+  }, [haiku])
+
+  const sendRequest = async (emotion: string) => {
     let requestString = `Write a haiku elliciting the emotion of ${emotion}`
     
     const messages = [
@@ -122,7 +124,29 @@ export default function Landing( { user }: LandingProps ) {
   });
 
   const data = await response.json();
-    setHaiku(data);
+    setHaiku(data.result.content)
+  };
+
+  const handleSynthesize = async (haiku: string) => {
+    try {
+      const response = await fetch('/api/synthesize', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ haiku }),
+      });
+
+      if (response.ok) {
+        const audioBlob = await response.blob();
+        const url = URL.createObjectURL(audioBlob);
+        setAudioUrl(url);
+      } else {
+        console.error('Failed to synthesize speech');
+      }
+    } catch (err) {
+      console.error('Error:', (err as Error).message);
+    }
   };
 
   const handleClick = () => {
@@ -149,7 +173,6 @@ export default function Landing( { user }: LandingProps ) {
     "Creativity" : ''
   };
 
-
   const segments = Object.entries(colors).map(([emotion, color], idx) => {
     return (
         <BarSegment key={idx} $color={color} onClick={() => sendRequest(emotion)}><p>{emotion}</p></BarSegment>
@@ -161,7 +184,8 @@ export default function Landing( { user }: LandingProps ) {
     {logIn && <LoginDropdown active={clicked} />}
     {haiku ? 
     <LandingWrapper>
-        <HaikuText>{haiku.result.content}</HaikuText>
+        {audioUrl && <audio controls src={audioUrl} />}
+        {/* <HaikuText>{haiku.result.content}</HaikuText> */}
     </LandingWrapper>
     :
     <LandingWrapper>
