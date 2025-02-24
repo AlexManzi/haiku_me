@@ -5,6 +5,13 @@ import styled, { keyframes } from "styled-components"
 import { signIn } from "next-auth/react"
 import GoogleLogo from "../../public/assets/GoogleLogo.png"
 import Image from "next/image"
+import { Open_Sans} from "next/font/google";
+
+const openSans = Open_Sans({
+  variable: "--font-Sriracha",
+  subsets: ["latin"],
+  weight: ["500"]
+});
 
 const fadeInSlideDown = keyframes`
   from {
@@ -32,10 +39,11 @@ const DropdownWrapper = styled.div<{$isActive: boolean}>`
 
 const SignInArea = styled.div<{$show: boolean}>`
     display: flex;
-    height: 36vh;
+    height: 32vh;
+    min-height: 220px;
     flex-direction: column;
     background-color: white;
-    width: 340px;
+    width: 320px;
     border-radius: 12px;
     opacity: ${(props) => props.$show ? '1' : '0'};
     transition: all .3s ease;
@@ -47,11 +55,19 @@ const SingInHeading = styled.h1`
     color: #2549FF;
 `;
 
+const SignInText = styled.p`
+    font-size: 1rem;
+    color: black;
+    margin: 0 auto;
+    margin-bottom: 1.5rem;
+`;
+
 const Login = styled.div`
     display: flex;
     margin-top: 2rem;
     display: flex;
     color: black;
+    align-items: center;
     background-color: white;
     border: 1px solid rgb(229,230,236);
     width: max-content;
@@ -85,9 +101,8 @@ const Login = styled.div`
 `;
 
 const GLogo = styled(Image)`
-    height: 24px;
+    height: 20px;
     width: auto;
-    margin-top: .5rem;
     padding-right: .5rem;
     padding-left: .5rem;
 `;
@@ -115,9 +130,10 @@ export default function LoginDropdown( { active }: LoginDropdownProps ) {
         <DropdownWrapper $isActive={active}>
             <SignInArea $show={showSignIn}>
                 <SingInHeading>Haiku_me</SingInHeading>
+                <SignInText>AI Haikus for every moment</SignInText>
                 <Login onClick={() => signIn('google', { callbackUrl: '/'})}>
                 <GLogo src={GoogleLogo} alt="Google Logo"/>
-                <p>Sign in with Google</p>
+                <p className={openSans.className}>Sign in with Google</p>
                 </Login>
             </SignInArea>
         </DropdownWrapper>
